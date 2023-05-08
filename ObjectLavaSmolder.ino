@@ -2,28 +2,29 @@
 
 class LavaSmolder {
 public:
-  LavaSmolder(int numLeds, int numSegments, int segmentSize, int boilTime, int pin);
-  void begin();
-  void update();
+  LavaSmolder(int numLeds, int numSegments, int segmentSize, int boilTime, int pin); // Constructor
+  void begin(); // Initializes the LED strip
+  void update(); // Updates the LED strip with a new boiling effect
 
 private:
-  Adafruit_NeoPixel strip;
-  int numLeds;
-  int numSegments;
-  int segmentSize;
-  int boilTime;
-  unsigned long previousMillis = 0;
+  Adafruit_NeoPixel strip; // The LED strip object
+  int numLeds; // The number of LEDs in the strip
+  int numSegments; // The number of segments to divide the strip into
+  int segmentSize; // The size of each segment
+  int boilTime; // The time between color changes in ms
+  unsigned long previousMillis = 0; // The time at which the last update occurred
 
-  void generateBoilingEffect();
+  void generateBoilingEffect(); // Generates a random boiling effect with shades of red
 
 public:
-  static const int NUM_LEDS = 13;
-  static const int PIN = 6;
-  static const int NUM_SEGMENTS = 6;
-  static const int SEGMENT_SIZE = 2;
-  static const int BOIL_TIME = 200;
+  static const int NUM_LEDS = 13; // The number of LEDs in the strip as a static constant
+  static const int PIN = 6; // The pin number used to control the LED strip as a static constant
+  static const int NUM_SEGMENTS = 6; // The number of segments to divide the strip into as a static constant
+  static const int SEGMENT_SIZE = 2; // The size of each segment as a static constant
+  static const int BOIL_TIME = 200; // The time between color changes in ms as a static constant
 };
 
+// Constructor implementation
 LavaSmolder::LavaSmolder(int numLeds, int numSegments, int segmentSize, int boilTime, int pin) :
   strip(numLeds, pin, NEO_GRB + NEO_KHZ800),
   numLeds(numLeds),
@@ -32,11 +33,17 @@ LavaSmolder::LavaSmolder(int numLeds, int numSegments, int segmentSize, int boil
   boilTime(boilTime)
 {}
 
+// Initializes the LED strip
 void LavaSmolder::begin() {
   strip.begin();
+  for (int i = 0; i < numLeds; i++) {
+    strip.setPixelColor(i, strip.Color(0, 0, 0)); // Set the initial color of each LED to black
+  }
   strip.show();
 }
 
+
+// Updates the LED strip with a new boiling effect
 void LavaSmolder::update() {
   unsigned long currentMillis = millis();
 
@@ -47,6 +54,7 @@ void LavaSmolder::update() {
   }
 }
 
+// Generates a random boiling effect with shades of red
 void LavaSmolder::generateBoilingEffect() {
   for (int i = 0; i < numSegments; i++) {
     int r = random(255);
@@ -58,12 +66,12 @@ void LavaSmolder::generateBoilingEffect() {
   }
 }
 
-LavaSmolder lavaSmolder(LavaSmolder::NUM_LEDS, LavaSmolder::NUM_SEGMENTS, LavaSmolder::SEGMENT_SIZE, LavaSmolder::BOIL_TIME, LavaSmolder::PIN);
+LavaSmolder lavaSmolder(LavaSmolder::NUM_LEDS, LavaSmolder::NUM_SEGMENTS, LavaSmolder::SEGMENT_SIZE, LavaSmolder::BOIL_TIME, LavaSmolder::PIN); // Creates an instance of the LavaSmolder class with the specified parameters
 
 void setup() {
-  lavaSmolder.begin();
+  lavaSmolder.begin(); // Initializes the LED strip
 }
 
 void loop() {
-  lavaSmolder.update();
+  lavaSmolder.update(); // Updates the LED strip with a new boiling effect
 }
